@@ -41,7 +41,7 @@ Iteration					| outputString
 
 Iteration		| outputString
 0				| ''{'
-x				| ''{"x":1 '
+x				| ''{"x":1 '  ===  ''{' + '"x":1'
 y 				| ''{"x":1,"y":2'
 z				| ''{"x":1,"y":2,"z":3'
 end of obj      | ''{"x":1,"y":2,"z":3'}''
@@ -54,31 +54,20 @@ end of obj      | ''{"x":1,"y":2,"z":3'}''
 // but you don't so you're going to write it from scratch:
 
 var stringifyJSON = function(obj) {
-  // your code goes here
-  if (typeof obj === "string" || typeof obj === "boolean" || typeof obj === "number" ) {
-  	return " \' " + obj + " \' ";
-  }
-  else if (obj.length === 0) {
-    return "";
-  }
-  else if (typeof obj === "object") {
-  	if (!Array.isArray(obj)) {
-	  	var keys = Object.keys(obj);
-	   	// var values = Object.values(obj);
-	   	for (var i = 0; i < keys.length; i++) {
-	   		var keyString = " ' " + keys[i] + " ' "; //quotes around key
-        var value = obj[keys[i]]; // value
-        delete obj[keys[i]] //delete current key value pair
-        var outputArray = [];
-        keyString = 
-        outputArray.push(keyString + ": " + value + ", " + stringifyJSON(obj))
-	   	}
+
+    if (typeof obj === "string" || typeof obj === "boolean" || typeof obj === "number") {
+        return " \' " + obj + " \' ";
+    } else if (obj.length === 0) {
+        return "";
+    } else if (typeof obj === "object") {
+        if (!Array.isArray(obj)) {
+            var output = "{";
+            var keys = Object.keys(obj);
+            for (var key in obj) {
+                output += " \' " + key + " \' : " + stringifyJSON(obj[key]) + ", "
+            }
+            return output.slice(0,-2) + "}"
+        }
+    } else {
     }
-    return outputArray
-
-	} else {
-      
-  }
 };
-
-stringifyJSON({a:1, b: 2})
