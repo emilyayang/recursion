@@ -19,17 +19,40 @@ recursion.
 
 */
 
-
 var getElementsByClassName = function(className) {
-	var output = [];
-	var nodeList = document.body.childNodes;
-  	for (var i = 0; i < nodeList.length; i++) {
-  		if (nodeList[i].hasChildNodes()) {
-  			return getElementsByClassName(nodeList[i]);
-  		} else if (nodeList[i].includes(className)) {
-  			output.push(nodeList[i]);
-  		}
+  var body = document.body;
+  var output = [];
+  var byClassName = function(element) {
+  	 if (element.classList !== undefined && element.classList.contains(className)) {
+  		// console.log(element.classList)
+  		output.push(element)
   	}
-  	return output;
-};
- 
+  	if (element.hasChildNodes()) {
+      for (var i = 0; i < element.childNodes.length; i++) {
+      	byClassName(element.childNodes[i]);
+      }
+  	} 
+  }
+  byClassName(body);
+  return output;
+}
+
+
+
+
+
+
+
+
+
+// 	var nodes =;
+//   	for (var i = 0; i < nodes.length; i++) {
+//   		console.log(nodes[i].className)
+//   		if (nodes[i].className === name) {
+//   			console.log([nodes[i]].concat(getElementsByClassName(name, nodes[i].childNodes)));
+//   			return [nodes[i].className].concat(getElementsByClassName(name, nodes[i].childNodes));
+//   		// } if (nodes[i].hasChildNodes()) {
+//   		// 	getElementsByClassName(name, nodes[i].childNodes)
+//   		}
+//   	}
+// };
