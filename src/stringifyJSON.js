@@ -55,10 +55,16 @@ end of obj      | ''{"x":1,"y":2,"z":3'}''
 
 var stringifyJSON = function(obj) {
 
-    if (typeof obj === "string" || typeof obj === "boolean" || typeof obj === "number") {
+    if (typeof obj === "string") {
         return " \' " + obj + " \' ";
+    } else if (typeof obj === "boolean" || typeof obj === "number" ) {
+        return obj;
+    }else if (typeof obj === "function" || typeof obj === "symbol" || Number.isNaN(obj) || obj === Infinity) {
+        return "null";
     } else if (obj.length === 0) {
-        return "";
+        return [];
+    } else if (obj === undefined) {
+        return undefined;
     } else if (typeof obj === "object") {
         if (!Array.isArray(obj)) {
             var output = "{";
@@ -67,7 +73,17 @@ var stringifyJSON = function(obj) {
                 output += " \' " + key + " \' : " + stringifyJSON(obj[key]) + ", "
             }
             return output.slice(0,-2) + "}"
+        } else if (Array.isArray(obj)) {
+          var output = "[";
+            for (var i = 0; i < obj.length; i++) {
+                output += stringifyJSON(obj[i]) + " , ";
+                }
+                return output.slice(0,-2) + "]"
         }
-    } else {
     }
 };
+
+
+
+
+
